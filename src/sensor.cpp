@@ -395,6 +395,9 @@ void sensor_gps_stop(boolean good_fix){
 
   // evaluate errors if the fix has not been acquired but a timeout occurred
   if(good_fix==false){
+    //mark filed fix
+    //set accelerometer error
+    bitSet(status_packet.data.system_functions_errors,2);
     //increment by one if timeout occurred
     sensor_gps_fail_fix_count++;
     //if no satellites have been heard, then increment again
@@ -404,9 +407,11 @@ void sensor_gps_stop(boolean good_fix){
     // fail-back to cold-fix after 10 failed hot-fixes
     if(sensor_gps_fail_fix_count>10){
       sensor_gps_last_fix_time=0; // forcing cold-fix
+      sensor_gps_initialized == false; // forcing re-initialization
     }
   }
   else{
+    bitClear(status_packet.data.system_functions_errors,2);
     sensor_gps_fail_fix_count=0;
   }
   // Accoridng to UBLOX the ephemeris data is valid for maximally 4 hours, if fix interval is greater then that, backup may not be efficient and disablign it automatically in this case.

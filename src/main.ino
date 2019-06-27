@@ -342,7 +342,7 @@ void loop() {
   case GPS_RUN:
     // defaults for timing out
     state_timeout_duration=3000;
-    state_goto_timeout=SENSOR_READ;
+    state_goto_timeout=GPS_START;
     // action
     // this state is here if gps does not send data and should reinit
     // transition
@@ -374,7 +374,13 @@ void loop() {
     state_goto_timeout=SENSOR_SEND;
     // transition
     if(sensor_read()){
-      state_transition(SENSOR_SEND);
+      //if GPS fix error, send status message instead
+      if(bitRead(status_packet.data.system_functions_errors,2)){
+        state_transition(STATUS_SEND);
+      }
+      else{
+        state_transition(SENSOR_SEND);
+      }
     }
     else{
       // sleep for 1 second and check
