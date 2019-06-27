@@ -14,7 +14,7 @@ extern boolean status_send_flag;
  * 
  * @details Packet reporting system staus
  * resetCause - details source of last reset, see decoder.js for meaning
- * mode - what operaiton mode is the device in
+ * battery_low - what battery low voltage is uder LoraWAN TX load
  * battery - battery status in %
  * temperature - temperature
  * vbus - voltage
@@ -30,7 +30,7 @@ extern boolean status_send_flag;
  */
 struct statusData_t{
   uint8_t resetCause;
-  uint8_t mode;
+  uint8_t battery_low;
   uint8_t battery;
   uint8_t temperature;
   uint8_t vbus;

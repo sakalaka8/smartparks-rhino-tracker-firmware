@@ -46,6 +46,7 @@ boolean status_send(void){
   float stm32l0_vdd = STM32L0.getVDDA();
   float stm32l0_temp = STM32L0.getTemperature();
 
+  // Battery voltage measurement, note that this is not particulary useful for a lisocl2 battery, must measure under load
   pinMode(BAN_MON_EN, OUTPUT);
   digitalWrite(BAN_MON_EN, HIGH);
   delay(10);
@@ -54,7 +55,7 @@ boolean status_send(void){
     value+=analogRead(BAN_MON);
     delay(1);
   }
-  float stm32l0_battery = value*4000/256/4095; // TODO: calibrate
+  float stm32l0_battery = value*4/4095; // TODO: calibrate
   digitalWrite(BAN_MON_EN, LOW);
   pinMode(BAN_MON_EN, INPUT_PULLDOWN);
 
